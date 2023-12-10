@@ -7,10 +7,12 @@ import { TodolistComponent } from './todolist/todolist.component';
 import { HttpClientModule } from  '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { HomeComponent } from './home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
-    TodolistComponent
+    TodolistComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
