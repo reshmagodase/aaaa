@@ -1,0 +1,83 @@
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">todolist Application</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <button class="btn btn-outline-success" type="submit">Add user</button>
+      </div>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit" (click)="search()">Search</button>
+      </form>
+    </div>
+  </nav>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">name</th>
+        <th scope="col">email</th>
+        <th scope="col">Phone</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of todolist | paginate: { itemsPerPage: 5, currentPage: page }">
+        <th scope="row">{{user.id}}</th>
+        <td>{{user.username}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.phone}}</td>
+        <td>
+            <button type="button" class="btn btn-success" style="margin-right: 2rem;" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="updatedata(user)">Edit</button>
+            <button type="button" class="btn btn-danger" (click)="deleterecord(user.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="has-text-centered">
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+</div>
+<!-- *********************************************************** -->
+<h4>Total Count : {{totalcount}}</h4>
+<!-- *********************************************************************** -->
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form  [formGroup]="userform">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Username</label>
+                  <input type="email" formControlName="username" class="form-control" id="username" aria-describedby="emailHelp">
+                    <span class="text-danger" *ngIf="this.userform.controls.username?.touched && this.userform.controls.username?.invalid">Username is Required</span>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label" >Email</label>
+                  <input type="text" formControlName="email" class="form-control" id="email" >
+                  <div *ngIf="this.userform.controls.email.errors" class="invalid-feedback">
+                    <div class="text-danger" *ngIf="this.userform.controls.email.errors.required">Email is required</div>
+                    <div class="text-danger" *ngIf="this.userform.controls.email.errors.email">Email must be a valid email address</div>
+                </div>                 
+                  <!-- <span class="text-danger" *ngIf="this.userform.controls.email.touched && this.userform.controls.email?.invalid">Email is Required</span> -->
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Phone</label>
+                    <input type="text" formControlName="phone" class="form-control" id="phone">
+                    <span class="text-danger" *ngIf="this.userform.controls.phone?.touched && this.userform.controls.phone?.invalid">Phone is Required</span>
+                  </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" [disabled]="!userform.valid" (click)="editdata()">Update Data</button>
+        </div>
+      </div>
+    </div>
+  </div>
